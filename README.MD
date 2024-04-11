@@ -29,9 +29,29 @@ python main.py --model_id "/workspace/text-generation-webui2/models/mistralai_Mi
 
 This will extract all the experts from the Mixtral model and save them as individual Mistral models in the `./experts` directory.
 
+### Walkthrough Example
+
+Because Mixtral models could be large, to test the script, we have created a `create_dummy_mixtral_for_test.py` file to create a small dummy Mixtral model. This model is saved to `./mixtral-makeup`. You can run this script and then try to extract experts from it using the following commands:
+
+```bash
+python create_dummy_mixtral_for_test.py
+python main.py --model_id ./mixtral-makeup --target_dir ./experts
+```
+
 ### Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+### Limitations
+
+Currently, the script extracts the same index of experts at each block/layer. However, it's important to note that the indices at different blocks/layers are irrelevant. This means that the expert with the same index in different layers does not necessarily correspond to the same expert. This is a limitation of the current implementation and users should be aware of this when using the extracted models.
+
+## Disclaimer
+
+This software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
+
+Users are responsible for checking and validating the correctness of their configuration files, safetensor files, and binary files generated using the software. The developers assume no responsibility for any errors, omissions, or other issues coming in these files, or any consequences resulting from the use of these files.
+
 
 ### License
 
