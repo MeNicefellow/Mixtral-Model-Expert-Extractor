@@ -40,9 +40,9 @@ if __name__ == "__main__":
             mistral_model.model.layers[layer_ind].mlp.gate_proj = \
             model.model.layers[layer_ind].block_sparse_moe.experts[expert_ind].w1
             mistral_model.model.layers[layer_ind].mlp.up_proj = model.model.layers[layer_ind].block_sparse_moe.experts[
-                expert_ind].w2
+                expert_ind].w3
             mistral_model.model.layers[layer_ind].mlp.down_proj = \
-            model.model.layers[layer_ind].block_sparse_moe.experts[expert_ind].w3
+            model.model.layers[layer_ind].block_sparse_moe.experts[expert_ind].w2
             mistral_model.model.layers[layer_ind].input_layernorm = model.model.layers[layer_ind].input_layernorm
             mistral_model.model.layers[layer_ind].post_attention_layernorm = model.model.layers[
                 layer_ind].post_attention_layernorm
