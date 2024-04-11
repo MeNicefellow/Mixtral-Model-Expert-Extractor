@@ -51,5 +51,10 @@ if __name__ == "__main__":
         os.mkdir(target_dir)
     for expert_ind in range(configuration.num_local_experts):
         mistral_models[expert_ind].save_pretrained(os.path.join(target_dir, "mistral_expert_" + str(expert_ind)))
+        try:
+            tokenizer = AutoTokenizer.from_pretrained(model_id)
+            tokenizer.save_pretrained(os.path.join(target_dir, "mistral_expert_" + str(expert_ind)))
+        except:
+            pass
 
 
