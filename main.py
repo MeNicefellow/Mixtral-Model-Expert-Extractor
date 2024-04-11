@@ -26,6 +26,8 @@ if __name__ == "__main__":
     mistral_config = MistralConfig(**dict(configuration.to_dict()))
     mistral_config.architectures = ['MistralForCausalLM']
     mistral_models = []
+    if not os.path.exists(target_dir):
+        os.mkdir(target_dir)
     for expert_ind in range(configuration.num_local_experts):
         mistral_model = MistralForCausalLM(mistral_config)
         mistral_model.lm_head = model.lm_head
@@ -46,11 +48,10 @@ if __name__ == "__main__":
             mistral_model.model.layers[layer_ind].input_layernorm = model.model.layers[layer_ind].input_layernorm
             mistral_model.model.layers[layer_ind].post_attention_layernorm = model.model.layers[
                 layer_ind].post_attention_layernorm
-            mistral_models.append(mistral_model)
-    if not os.path.exists(target_dir):
-        os.mkdir(target_dir)
-    for expert_ind in range(configuration.num_local_experts):
-        mistral_models[expert_ind].save_pretrained(os.path.join(target_dir, "mistral_expert_" + str(expert_ind)))
+        for param in mistral_model.parameters():
+            param.data = param.data.to(torch.bfloat16)
+        mistral_models.append(mistral_model)
+        mistral_model.save_pretrained(os.path.join(target_dir, "mistral_expert_" + str(expert_ind)))
         try:
             tokenizer = AutoTokenizer.from_pretrained(model_id)
             tokenizer.save_pretrained(os.path.join(target_dir, "mistral_expert_" + str(expert_ind)))
