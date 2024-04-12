@@ -1,12 +1,8 @@
-from transformers import MixtralForCausalLM, MixtralConfig
 from transformers import MistralForCausalLM, MistralConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer, AutoConfig
 import os
-import os
 import torch
-from torch.nn import functional as F
 import argparse
-from torch import nn
 os.environ["CUDA_VISIBLE_DEVICES"] = '-1'
 
 
@@ -32,7 +28,6 @@ if __name__ == "__main__":
         model = AutoModelForCausalLM.from_pretrained(model_id, device_map="cpu", trust_remote_code=False)
     mistral_config = MistralConfig(**dict(configuration.to_dict()))
     mistral_config.architectures = ['MistralForCausalLM']
-    #mistral_models = []
     if not os.path.exists(target_dir):
         os.mkdir(target_dir)
     for expert_ind in range(configuration.num_local_experts):
@@ -57,7 +52,6 @@ if __name__ == "__main__":
                 layer_ind].post_attention_layernorm
         for param in mistral_model.parameters():
             param.data = param.data.to(torch.bfloat16)
-        #mistral_models.append(mistral_model)
         mistral_model.save_pretrained(os.path.join(target_dir, "mistral_expert_" + str(expert_ind)))
         try:
             tokenizer = AutoTokenizer.from_pretrained(model_id)
