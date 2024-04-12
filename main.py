@@ -15,14 +15,21 @@ def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_id', default="/workspace/text-generation-webui2/models/mistralai_Mixtral-8x7B-Instruct-v0.1")
     parser.add_argument('--target_dir', default="./experts")
+    parser.add_argument('--load_in_8bit', action='store_true')
     return parser.parse_args()
 
 if __name__ == "__main__":
     args = parse_arguments()
     model_id = args.model_id
     target_dir = args.target_dir
+    load_in_8bit = args.load_in_8bit
     configuration = AutoConfig.from_pretrained(model_id)
-    model = AutoModelForCausalLM.from_pretrained(model_id, device_map="cpu", trust_remote_code=False)
+    if load_in_8bit:
+        print("loading in 8bit")
+        model = AutoModelForCausalLM.from_pretrained(model_id, device_map="cpu", trust_remote_code=False,load_in_8bit=True)
+    else:
+        print("Not loading 8bit")
+        model = AutoModelForCausalLM.from_pretrained(model_id, device_map="cpu", trust_remote_code=False)
     mistral_config = MistralConfig(**dict(configuration.to_dict()))
     mistral_config.architectures = ['MistralForCausalLM']
     #mistral_models = []
