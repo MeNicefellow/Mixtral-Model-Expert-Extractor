@@ -48,6 +48,11 @@ The 8 models extracted from Mixtral-8x7B are now available in the Hugging Face M
 
 Currently, the script extracts the same index of experts at each block/layer. However, it's important to note that the indices at different blocks/layers are irrelevant. This means that the expert with the same index in different layers does not necessarily correspond to the same expert. This is a limitation of the current implementation and users should be aware of this when using the extracted models.
 
+
+## Relevant Project
+
+(Mixtral Expert Trimmer)[https://github.com/MeNicefellow/Mixtral-Expert-Trimmer] is a related project that trims the experts in Mixtral models. It works by keeping only the selected experts at every layer of the model.
+
 ## Disclaimer
 
 This software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
