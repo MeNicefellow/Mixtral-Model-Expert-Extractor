@@ -45,6 +45,7 @@ if __name__ == "__main__":
     del mc["num_local_experts"]
     del mc["router_aux_loss_coef"]
     del mc["router_jitter_noise"]
+    del mc["output_router_logits"]
     mc["model_type"] = "mistral"
     mc["architectures"][0] = "MistralForCausalLM"
     mistral_config = MistralConfig(**mc)
